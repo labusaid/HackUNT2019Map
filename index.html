@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple Markers</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="button-container">
+      <div class="button" id="update-button">Update</div>
+    </div>
+    <script>
+      var map = null;
+
+      function initMap() {
+        var myLatLng = {lat: 33.2542255, lng: -97.15263189999999};
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: myLatLng
+        });
+      }
+      function updateMap() {
+        if (map != null) {
+          $.ajax( {
+          url: "https://us-central1-accessibility-ar.cloudfunctions.net/getAllMarkers",
+            type: "GET",
+            success: function(result){
+              console.log(result.markers);
+              var responseObj = result;
+              console.log(result);
+              for (i = 0; i < responseObj.count; i++) {
+                responseObj.markers[i]
+                var marker = new google.maps.Marker({
+                  position: {lat:parseFloat(responseObj.markers[i].lat),
+                    lng:parseFloat(responseObj.markers[i].long)},
+                  map: map,
+                  title: responseObj.markers[i].msg
+                });
+              }
+            },
+            error: function(error){
+                console.log(error);
+            }
+          });
+        }
+      }
+
+      $( document ).ready(function() {
+        $("#update-button").click(function() {
+          updateMap();
+        });
+      });
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOWnzKamiqKn8grs6l150kfXID0ZKPj3I&callback=initMap">
+    </script>
+    <script src="js/effects.js"></script>
+  </body>
+</html>

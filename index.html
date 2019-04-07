@@ -5,15 +5,19 @@
     <meta charset="utf-8">
     <title>Simple Markers</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
     integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
     crossorigin="anonymous"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   </head>
   <body>
     <div id="map"></div>
     <div id="button-container">
       <div class="button" id="update-button">Update</div>
     </div>
+    <div id="marker-container"></div>
     <script>
       var map = null;
 
@@ -27,6 +31,7 @@
       }
       function updateMap() {
         if (map != null) {
+          $("#marker-container").empty();
           $.ajax( {
           url: "https://us-central1-accessibility-ar.cloudfunctions.net/getAllMarkers",
             type: "GET",
@@ -35,13 +40,14 @@
               var responseObj = result;
               console.log(result);
               for (i = 0; i < responseObj.count; i++) {
-                responseObj.markers[i]
                 var marker = new google.maps.Marker({
                   position: {lat:parseFloat(responseObj.markers[i].lat),
                     lng:parseFloat(responseObj.markers[i].long)},
                   map: map,
                   title: responseObj.markers[i].msg
                 });
+
+                $("#marker-container").append("<div class='marker-info'>" + responseObj.markers[i].msg + "</div>");
               }
             },
             error: function(error){

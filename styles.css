@@ -1,13 +1,19 @@
 /* Always set the map height explicitly to define the size of the div
 * element that contains the map. */
 #map {
-height: 425px;
+height: 80%;
 }
 /* Optional: Makes the sample page fill the window. */
 html, body {
 height: 100%;
 margin: 0;
 padding: 0;
+font-family: "Roboto";
+}
+
+#marker-container {
+    display: flex;
+    flex-direction: column;
 }
 
 #buttons-container {
@@ -22,7 +28,8 @@ flex-direction: column;
 .button {
 background-color: #0000007a;
 color: white;
-font-size: 8pt;
+font-size: 14pt;
+font-family: "Roboto";
 align-content: center;
 
 padding-left: 10px;
